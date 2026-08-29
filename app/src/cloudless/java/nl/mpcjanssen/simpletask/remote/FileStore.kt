@@ -42,11 +42,13 @@ object FileStore : IFileStore {
             } else {
                 true
             }
-            return (
-                    ContextCompat.checkSelfPermission(TodoApplication.app,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                            PackageManager.PERMISSION_GRANTED)
-                    && externManager
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                externManager
+            } else {
+                ContextCompat.checkSelfPermission(TodoApplication.app,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED
+            }
         }
 
     override fun loadTasksFromFile(file: File): List<String> {
