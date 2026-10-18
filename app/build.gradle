@@ -150,8 +150,8 @@ repositories {
 }
 
 dependencies {
-    dropboxImplementation 'com.dropbox.core:dropbox-core-sdk:7.0.0'
-    dropboxImplementation 'com.dropbox.core:dropbox-android-sdk:7.0.0'
+    dropboxImplementation 'com.dropbox.core:dropbox-core-sdk:8.0.2'
+    dropboxImplementation 'com.dropbox.core:dropbox-android-sdk:8.0.2'
     nextcloudImplementation 'com.github.nextcloud:android-library:1.6.1'
     nextcloudImplementation 'com.google.code.gson:gson:2.9.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
