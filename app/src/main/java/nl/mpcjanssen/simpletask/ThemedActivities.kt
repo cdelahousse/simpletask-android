@@ -36,7 +36,8 @@ abstract class ThemedNoActionBarActivity : AppCompatActivity() {
 
 abstract class ThemedActionBarActivity : AppCompatActivity() {
 
-    protected open val includeActionBarInContentInset = false
+    // The window action bar overlaps the content under edge-to-edge, on every screen using it
+    protected open val includeActionBarInContentInset = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(TodoApplication.config.activeActionBarTheme)

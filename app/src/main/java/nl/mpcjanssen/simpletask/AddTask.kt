@@ -27,7 +27,6 @@ import nl.mpcjanssen.simpletask.util.*
 import java.util.*
 
 class AddTask : ThemedActionBarActivity() {
-    override val includeActionBarInContentInset = true
 
     private var startText: String = ""
 
