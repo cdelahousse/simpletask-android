@@ -5,3 +5,8 @@
 # as it contains information specific to your local configuration.
 
 sdk.dir=C\:/Users/name/Documents/Android/adt-bundle/sdk
+
+# Dropbox app keys for the dropbox flavor (without the "db-" prefix).
+# Create the apps at https://www.dropbox.com/developers/apps
+# dropbox.appKey=your_full_dropbox_app_key
+# dropbox.folderAppKey=your_app_folder_app_key

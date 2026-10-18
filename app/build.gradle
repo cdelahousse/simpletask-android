@@ -21,6 +21,20 @@ if (!project.hasProperty("storeServiceAccount")) {
 // Base applicationId for this fork. Flavors append a suffix (cloudless uses the base as-is).
 def appIdBase = "ca.delahousse.simpletask"
 
+// Dropbox app keys (without the "db-" prefix), taken from Gradle properties or local.properties:
+//   dropbox.appKey       = key of a "Full Dropbox" app
+//   dropbox.folderAppKey = key of an "App folder" app
+// Not committed. Without them the dropbox flavor builds but cannot log in.
+// A hand-made app/src/dropbox/res/values/dropbox.xml (upstream's mechanism) takes precedence.
+def localProps = new Properties()
+if (rootProject.file("local.properties").exists()) {
+    rootProject.file("local.properties").withInputStream { localProps.load(it) }
+}
+def dropboxKey = { String name ->
+    def key = project.findProperty(name) ?: localProps.getProperty(name)
+    return "db-" + (key ?: "placeholder")
+}
+
 
 android {
     compileSdkVersion 31
@@ -60,6 +74,12 @@ android {
             dimension "main"
             applicationId = appIdBase + ".dropbox"
             manifestPlaceholders = [providerFlavour: "dropbox"]
+            if (!file("src/dropbox/res/values/dropbox.xml").exists()) {
+                resValue "string", "dropbox_consumer_key", dropboxKey("dropbox.appKey")
+            }
+            if (!file("src/dropbox/res/values/dropbox-folder.xml").exists()) {
+                resValue "string", "dropbox_folder_consumer_key", dropboxKey("dropbox.folderAppKey")
+            }
         }
         cloudless {
             dimension "main"
