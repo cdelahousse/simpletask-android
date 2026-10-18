@@ -112,7 +112,6 @@ android {
 
     signingConfigs {
         release {
-            keyAlias = "mpcjanssen.nl"
         }
     }
 
@@ -188,13 +187,21 @@ dependencies {
 //    }
 }
 
-// Only sign if we have keystore properties in the gradle.properties in ~/.gradle
-if (project.hasProperty('storeFile') &&
-        project.hasProperty('storePassword') &&
-        project.hasProperty('keyPassword')) {
-    android.signingConfigs.release.storeFile = new File(System.getenv("HOME"),storeFile)
-    android.signingConfigs.release.storePassword = storePassword
-    android.signingConfigs.release.keyPassword = keyPassword
+// Release signing. Values come from Gradle properties, local.properties or environment
+// variables (CI); nothing is committed. Without them release builds are left unsigned.
+//   signing.storeFile / SIGNING_STORE_FILE        path to the .jks keystore
+//   signing.storePassword / SIGNING_STORE_PASSWORD
+//   signing.keyAlias / SIGNING_KEY_ALIAS
+//   signing.keyPassword / SIGNING_KEY_PASSWORD
+def signingValue = { String prop, String env ->
+    project.findProperty(prop) ?: localProps.getProperty(prop) ?: System.getenv(env)
+}
+def signingStoreFile = signingValue("signing.storeFile", "SIGNING_STORE_FILE")
+if (signingStoreFile) {
+    android.signingConfigs.release.storeFile = file(signingStoreFile)
+    android.signingConfigs.release.storePassword = signingValue("signing.storePassword", "SIGNING_STORE_PASSWORD")
+    android.signingConfigs.release.keyAlias = signingValue("signing.keyAlias", "SIGNING_KEY_ALIAS")
+    android.signingConfigs.release.keyPassword = signingValue("signing.keyPassword", "SIGNING_KEY_PASSWORD")
 } else {
     android.buildTypes.release.signingConfig = null
 }
