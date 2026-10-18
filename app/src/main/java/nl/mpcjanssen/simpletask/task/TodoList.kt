@@ -158,11 +158,12 @@ class TodoList(val config: Config) {
 
     fun update(org: Collection<Task>, updated: List<Task>, addAtEnd: Boolean) {
         val smallestSize = org.zip(updated) { orgTask, updatedTask ->
-            val idx = todoItems.indexOf(orgTask)
+            val idx = TodoListEditMatcher.findEditableTaskIndex(todoItems, orgTask)
             if (idx != -1) {
-                updatedTask.id = orgTask.id
+                updatedTask.id = todoItems[idx].id
                 todoItems[idx] = updatedTask
             } else {
+                Log.w(tag, "Original task for edit was not found; adding updated task as new")
                 todoItems.add(updatedTask)
             }
             1
