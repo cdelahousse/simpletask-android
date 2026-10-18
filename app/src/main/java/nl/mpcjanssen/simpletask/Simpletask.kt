@@ -15,7 +15,9 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.app.SearchManager
+import android.Manifest
 import android.content.*
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.TypedArray
 import android.net.Uri
@@ -40,6 +42,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
@@ -58,6 +61,7 @@ import android.R.id as androidId
 class Simpletask : ThemedNoActionBarActivity() {
     companion object {
         private val REQUEST_PREFERENCES = 1
+        private val REQUEST_NOTIFICATION_PERMISSION = 2
 
         val URI_BASE = Uri.fromParts("Simpletask", "", null)!!
         val URI_SEARCH = Uri.withAppendedPath(URI_BASE, "search")!!
@@ -67,6 +71,8 @@ class Simpletask : ThemedNoActionBarActivity() {
         private val QUICK_FILTER_DRAWER = GravityCompat.START
     }
     private var options_menu: Menu? = null
+    // Tasks waiting to be pinned while the Android 13+ notification permission is requested
+    private var pendingPinTasks: List<Task> = emptyList()
 
     lateinit var taskAdapter: TaskAdapter
     private var m_broadcastReceiver: BroadcastReceiver? = null
@@ -1120,6 +1126,13 @@ class Simpletask : ThemedNoActionBarActivity() {
     }
 
     private fun pinNotification(checkedTasks: List<Task>) {
+        if (Build.VERSION.SDK_INT >= 33 &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            pendingPinTasks = checkedTasks
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+            return
+        }
         for (task in checkedTasks) {
             val taskIdHash = task.id.hashCode()
             val editTaskIntent = Intent(this, AddTask::class.java).let {
@@ -1143,6 +1156,17 @@ class Simpletask : ThemedNoActionBarActivity() {
             }
             if (!TodoApplication.config.hasKeepSelection) {
                 TodoApplication.todoList.clearSelection()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            val tasks = pendingPinTasks
+            pendingPinTasks = emptyList()
+            if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+                pinNotification(tasks)
             }
         }
     }
