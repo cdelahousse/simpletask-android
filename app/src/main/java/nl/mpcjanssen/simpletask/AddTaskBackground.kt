@@ -94,6 +94,11 @@ class AddTaskBackground : Activity() {
                 addBackgroundTask(imageUri.toString(), append_text)
             }
         }
+        // This activity has no UI; close it on paths that added nothing, or the invisible
+        // window stays on top and swallows touches
+        if (!isFinishing) {
+            finish()
+        }
     }
 
     private fun noteToSelf(intent: Intent, append_text: String) {
