@@ -18,6 +18,9 @@ if (!project.hasProperty("storeServiceAccount")) {
     ext.storeServiceAccount = ""
 }
 
+// Base applicationId for this fork. Flavors append a suffix (cloudless uses the base as-is).
+def appIdBase = "ca.delahousse.simpletask"
+
 
 android {
     compileSdkVersion 31
@@ -55,32 +58,32 @@ android {
     productFlavors {
         dropbox {
             dimension "main"
-            applicationId = "nl.mpcjanssen.todotxtholo"
+            applicationId = appIdBase + ".dropbox"
             manifestPlaceholders = [providerFlavour: "dropbox"]
         }
         cloudless {
             dimension "main"
-            applicationId = "nl.mpcjanssen.simpletask"
+            applicationId = appIdBase
             manifestPlaceholders = [providerFlavour: "cloudless"]
         }
         encrypted {
             dimension "main"
-            applicationId = "nl.mpcjanssen.simpletask.encrypted"
+            applicationId = appIdBase + ".encrypted"
             manifestPlaceholders = [providerFlavour: "encrypted"]
         }
         nextcloud {
             dimension "main"
-            applicationId = "nl.mpcjanssen.simpletask.nextcloud"
+            applicationId = appIdBase + ".nextcloud"
             manifestPlaceholders = [providerFlavour: "nextcloud"]
         }
 //        dokuwiki {
 //            dimension "main"
-//            applicationId = "nl.mpcjanssen.simpletask.dokuwiki"
+//            applicationId = appIdBase + ".dokuwiki"
 //            manifestPlaceholders = [providerFlavour: "dokuwiki"]
 //        }
         webdav {
             dimension "main"
-            applicationId = "nl.mpcjanssen.simpletask.webdav"
+            applicationId = appIdBase + ".webdav"
             manifestPlaceholders = [providerFlavour: "webdav"]
         }
     }
