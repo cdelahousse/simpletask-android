@@ -1,10 +1,13 @@
 package nl.mpcjanssen.simpletask
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -53,6 +56,7 @@ abstract class ThemedActionBarActivity : AppCompatActivity() {
                 applyTopToRoot = includeActionBarInContentInset,
                 actionBarHeight = if (includeActionBarInContentInset) actionBarHeight(this) else 0
         )
+        addStatusBarBackground(this)
     }
 }
 
@@ -76,6 +80,31 @@ abstract class ThemedPreferenceActivity : AppCompatPreferenceActivity() {
                 applyTopToRoot = true,
                 actionBarHeight = actionBarHeight(this)
         )
+        addStatusBarBackground(this)
+    }
+}
+
+// Android 15+ no longer paints the status bar with the theme's colorPrimaryDark, so screens
+// using the window action bar showed the light window background behind white status icons.
+// Draw that colour behind the status bar ourselves.
+private fun addStatusBarBackground(activity: Activity) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        return
+    }
+    val attributes = activity.obtainStyledAttributes(intArrayOf(androidx.appcompat.R.attr.colorPrimaryDark))
+    val color = attributes.getColor(0, 0)
+    attributes.recycle()
+    val decor = activity.window.decorView as ViewGroup
+    val background = View(activity)
+    background.setBackgroundColor(color)
+    decor.addView(background, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, Gravity.TOP))
+    ViewCompat.setOnApplyWindowInsetsListener(background) { view, insets ->
+        val height = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        if (view.layoutParams.height != height) {
+            view.layoutParams.height = height
+            view.requestLayout()
+        }
+        insets
     }
 }
 
