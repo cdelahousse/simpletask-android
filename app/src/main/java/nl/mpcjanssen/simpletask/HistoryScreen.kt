@@ -18,8 +18,8 @@ import nl.mpcjanssen.simpletask.dao.TodoFile
 import nl.mpcjanssen.simpletask.util.createCachedDatabase
 import nl.mpcjanssen.simpletask.util.shareText
 import nl.mpcjanssen.simpletask.util.showToastShort
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import nl.mpcjanssen.simpletask.util.doAsync
+import nl.mpcjanssen.simpletask.util.uiThread
 import java.io.File
 import java.lang.Integer.max
 import java.text.SimpleDateFormat
