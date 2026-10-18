@@ -399,14 +399,13 @@ fun createCachedFile(context: Context, fileName: String,
                      content: String) {
 
     val cacheFile = File(context.cacheDir, fileName)
-    if (cacheFile.createNewFile()) {
-        val fos = FileOutputStream(cacheFile, false)
-        val osw = OutputStreamWriter(fos, "UTF8")
-        val pw = PrintWriter(osw)
-        pw.println(content)
-        pw.flush()
-        pw.close()
-    }
+    // Always overwrite: an earlier share may have left this file behind
+    val fos = FileOutputStream(cacheFile, false)
+    val osw = OutputStreamWriter(fos, "UTF8")
+    val pw = PrintWriter(osw)
+    pw.println(content)
+    pw.flush()
+    pw.close()
 }
 
 @Throws(IOException::class)
