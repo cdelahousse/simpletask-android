@@ -13,6 +13,12 @@ Default branch: `maintenance/modernize`. Upstream's `master` is kept untouched f
   Upgrade in steps, not big jumps.
 - Prefer reusing maintenance fixes from other forks (cherry-pick with `-x`, keep the original
   author) over writing new code.
+- **Adversarial review of every change.** Before a change counts as done, a separate reviewer
+  agent checks it: a skeptical Android expert who is protective of the app, as if the original
+  author were reviewing. It gets the diff, the purpose and these rules, may build the app and try
+  it in the emulator (fake data only, never the maintainer's phone or real Dropbox). Its objections
+  are not taken at face value: whoever made the change verifies each one against the code or the
+  emulator, then fixes it or rejects it with a stated reason, before merging.
 - Ship the `dropbox` and `cloudless` flavors. Keep `nextcloud`, `webdav` and `encrypted` building,
   but they are not released.
 
