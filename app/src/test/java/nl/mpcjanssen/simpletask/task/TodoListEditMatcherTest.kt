@@ -11,9 +11,9 @@ class TodoListEditMatcherTest : TestCase() {
     }
 
     fun testFindsReloadedTaskByUuid() {
-        val original = Task("Call plumber @home +house uuid:abc-123")
-        val reloaded = Task("Call plumber @home +house uuid:abc-123")
-        val tasks = listOf(Task("Other task"), reloaded)
+        val original = Task("Call plumber @home +house uuid:0f8fad5b-d9cb-469f-a165-70867728950e")
+        val reloaded = Task("Call the plumber again @home +house uuid:0f8fad5b-d9cb-469f-a165-70867728950e")
+        val tasks = listOf(Task("Other task uuid:7c9e6679-7425-40de-944b-e07fc1f90ae7"), reloaded)
 
         assertEquals(1, TodoListEditMatcher.findEditableTaskIndex(tasks, original))
     }
@@ -24,6 +24,15 @@ class TodoListEditMatcherTest : TestCase() {
         val tasks = listOf(Task("Other task"), reloaded)
 
         assertEquals(1, TodoListEditMatcher.findEditableTaskIndex(tasks, original))
+    }
+
+    fun testDoesNotMatchSameTextWithDifferentUuid() {
+        // The original was removed elsewhere; a separate task with the same text must not be replaced
+        val original = Task("Water plants uuid:0f8fad5b-d9cb-469f-a165-70867728950e")
+        val sibling = Task("Water plants uuid:7c9e6679-7425-40de-944b-e07fc1f90ae7")
+        val tasks = listOf(Task("Other task"), sibling)
+
+        assertEquals(-1, TodoListEditMatcher.findEditableTaskIndex(tasks, original))
     }
 
     fun testReturnsMinusOneWhenTaskCannotBeMatched() {
