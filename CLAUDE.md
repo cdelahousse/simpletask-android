@@ -18,7 +18,7 @@ Default branch: `maintenance/modernize`. Upstream's `master` is kept untouched f
 
 ## Build
 
-- JDK 17 (`JAVA_HOME=/opt/homebrew/opt/openjdk@17` on the maintainer's Mac). Android SDK from
+- JDK 21 (`JAVA_HOME=/opt/homebrew/opt/openjdk@21` on the maintainer's Mac). Android SDK from
   Homebrew's `android-commandlinetools`.
 - `./gradlew assembleDropboxDebug assembleCloudlessDebug testDropboxDebugUnitTest testCloudlessDebugUnitTest`
 - The build reads git with JGit, which fails on a detached HEAD in a git worktree. Build on a branch.
