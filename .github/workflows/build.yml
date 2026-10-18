@@ -28,10 +28,15 @@ jobs:
       - name: Build debug APKs and run unit tests
         run: ./gradlew --no-daemon assembleDropboxDebug assembleCloudlessDebug testDropboxDebugUnitTest testCloudlessDebugUnitTest
 
+      - name: Check unreleased flavors still build
+        run: ./gradlew --no-daemon assembleNextcloudDebug assembleWebdavDebug assembleEncryptedDebug
+
       - uses: actions/upload-artifact@v5
         with:
           name: debug-apks
-          path: app/build/outputs/apk/*/debug/*.apk
+          path: |
+            app/build/outputs/apk/dropbox/debug/*.apk
+            app/build/outputs/apk/cloudless/debug/*.apk
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
