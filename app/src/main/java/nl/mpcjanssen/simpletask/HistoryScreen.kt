@@ -65,6 +65,7 @@ class HistoryScreen : ThemedActionBarActivity() {
             createCachedDatabase(this, dbFile)
             val fileUri = Uri.parse("content://" + CachedFileProvider.AUTHORITY + "/" + dbFile.name)
             shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         } catch (e: Exception) {
             Log.w(TAG, "Failed to create file for sharing", e)
         }

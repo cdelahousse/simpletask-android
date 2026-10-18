@@ -480,6 +480,7 @@ fun shareText(act: Activity, subject: String, text: String) {
                     Constants.SHARE_FILE_NAME, text)
             val fileUri = Uri.parse("content://" + CachedFileProvider.AUTHORITY + "/" + Constants.SHARE_FILE_NAME)
             shareIntent.putExtra(android.content.Intent.EXTRA_STREAM, fileUri)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         } catch (e: Exception) {
             Log.w(TAG, "Failed to create file for sharing")
         }
