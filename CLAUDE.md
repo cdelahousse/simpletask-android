@@ -21,6 +21,10 @@ Default branch: `maintenance/modernize`. Upstream's `master` is kept untouched f
   emulator, then fixes it or rejects it with a stated reason, before merging. The reviewer also
   looks for regressions in visual and rendering performance (jank, dropped frames, extra layout
   passes or overdraw), e.g. by comparing `dumpsys gfxinfo` frame stats before and after.
+- **Screenshots with every visible change.** When a change affects what the user sees, take
+  before and after screenshots on the emulator (fake data only) and include them when reporting
+  the change to the maintainer (and in the PR, if there is one). For changes with no visible
+  effect, say so instead.
 - Ship the `dropbox` and `cloudless` flavors. Keep `nextcloud`, `webdav` and `encrypted` building,
   but they are not released.
 
