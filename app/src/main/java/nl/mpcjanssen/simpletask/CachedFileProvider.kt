@@ -44,7 +44,12 @@ class CachedFileProvider : ContentProvider() {
                     // E.g.
                     // 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
                     // Take this and build the path to the file
-                    val fileLocation = File(it.cacheDir, uri.lastPathSegment)
+                    val cacheDir = it.cacheDir.canonicalFile
+                    val fileLocation = File(cacheDir, uri.lastPathSegment ?: "").canonicalFile
+                    // Only serve files directly inside the cache dir (blocks "../" path traversal)
+                    if (fileLocation.parentFile != cacheDir) {
+                        throw FileNotFoundException("Unsupported uri: $uri")
+                    }
 
                     // Create & return a ParcelFileDescriptor pointing to the file
                     // Note: I don't care what mode they ask for - they're only getting
