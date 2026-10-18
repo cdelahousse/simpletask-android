@@ -55,8 +55,8 @@ android {
     //noinspection GroovyMissingReturnStatement
 
     defaultConfig {
-        versionName "11.0.1"
-        versionCode 11000001
+        versionName "11.0.2-fork.2"
+        versionCode 11000002
         buildConfigField "String", "GIT_VERSION", "\"" + androidGitVersion.name() + "\""
         multiDexEnabled false
         minSdkVersion 26
