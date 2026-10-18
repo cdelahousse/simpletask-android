@@ -354,8 +354,6 @@ You should have received a copy of the GNU General Public License along with Tod
     <string name="script_tab_script_from_file">Skrypt z pliku</string>
     <string name="script_tab_use_script">Użyj skryptu</string>
     <string name="script_tab_script">Skrypt</string>
-    <string name="saved_filters_exported"/>
-    <string name="saved_filters_imported"/>
     <string name="taskview_extended_pref_title">Pokaż daty w osobnym wierszu</string>
     <string name="force_english_title">Wymuś angielski</string>
 </resources>
