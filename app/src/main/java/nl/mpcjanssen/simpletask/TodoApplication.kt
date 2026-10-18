@@ -169,7 +169,8 @@ class TodoApplication : Application() {
         Log.i(TAG, "Scheduling task list reload")
         val intent = Intent(this, AlarmReceiver::class.java)
         intent.putExtra(Constants.ALARM_REASON_EXTRA, Constants.ALARM_RELOAD)
-        val pi = PendingIntent.getBroadcast(this, 0, intent,
+        // Request code 1: code 0 is the daily alarm, and extras don't make PendingIntents distinct
+        val pi = PendingIntent.getBroadcast(this, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
