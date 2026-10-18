@@ -1,7 +1,6 @@
 package nl.mpcjanssen.simpletask
 
 import android.app.Activity
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -54,8 +53,8 @@ abstract class ThemedActionBarActivity : AppCompatActivity() {
         applySystemBarInsets(
                 findViewById(android.R.id.content),
                 null,
-                applyTopToRoot = includeActionBarInContentInset,
-                actionBarHeight = if (includeActionBarInContentInset) actionBarHeight(this) else 0
+                applyTopToRoot = false,
+                belowWindowActionBar = includeActionBarInContentInset
         )
         addStatusBarBackground(this)
     }
@@ -78,8 +77,8 @@ abstract class ThemedPreferenceActivity : AppCompatPreferenceActivity() {
         applySystemBarInsets(
                 findViewById(android.R.id.content),
                 null,
-                applyTopToRoot = true,
-                actionBarHeight = actionBarHeight(this)
+                applyTopToRoot = false,
+                belowWindowActionBar = true
         )
         addStatusBarBackground(this)
     }
@@ -109,31 +108,33 @@ private fun addStatusBarBackground(activity: Activity) {
     }
 }
 
-private fun actionBarHeight(context: Context): Int {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-        return 0
-    }
-    val attributes = context.obtainStyledAttributes(intArrayOf(androidx.appcompat.R.attr.actionBarSize))
-    val height = attributes.getDimensionPixelSize(0, 0)
-    attributes.recycle()
-    return height
-}
-
 private fun applySystemBarInsets(
         root: ViewGroup,
         topBar: View?,
         applyTopToRoot: Boolean,
-        actionBarHeight: Int = 0
+        belowWindowActionBar: Boolean = false
 ) {
     val rootPaddingTop = root.paddingTop
     val rootPaddingBottom = root.paddingBottom
     val topBarPaddingTop = topBar?.paddingTop ?: 0
 
     ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-        val topInset = if (applyTopToRoot) {
+        val topInset = if (belowWindowActionBar) {
+            // Under edge-to-edge (Android 15+) the window action bar sits below the status bar,
+            // but the content frame only starts one action bar height from the top, so it is
+            // short by the status bar height. Earlier versions lay out correctly on their own.
+            // Read the root insets: the action bar layout has already consumed the status bar
+            // from the insets dispatched to the content view.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                ViewCompat.getRootWindowInsets(view)
+                        ?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
+            } else {
+                0
+            }
+        } else if (applyTopToRoot) {
             val systemTopInset = insets.getSystemWindowInsets().top
             val statusBarInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            maxOf(systemTopInset, statusBarInset + actionBarHeight)
+            maxOf(systemTopInset, statusBarInset)
         } else {
             0
         }
