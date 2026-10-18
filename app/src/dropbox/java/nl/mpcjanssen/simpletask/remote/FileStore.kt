@@ -12,6 +12,7 @@ import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.DownloadErrorException
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
+import com.dropbox.core.v2.files.GetMetadataErrorException
 import com.dropbox.core.v2.files.WriteMode
 import nl.mpcjanssen.simpletask.R
 import nl.mpcjanssen.simpletask.TodoApplication
@@ -121,6 +122,10 @@ object FileStore : IFileStore {
                 return data.rev != lastSeenRemoteId
             } catch (e: InvalidAccessTokenException) {
                 Log.w(TAG, "$e")
+            } catch (e: GetMetadataErrorException) {
+                // e.g. the todo file does not exist; let the load report the failure
+                Log.w(TAG, "$e")
+                return true
             }
         }
 
