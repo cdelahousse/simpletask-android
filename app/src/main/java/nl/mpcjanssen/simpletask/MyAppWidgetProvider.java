@@ -80,8 +80,10 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
         appIntent = new Intent(ctx,Simpletask.class);
         appIntent.setAction(Constants.INTENT_START_FILTER);
+        // Must be mutable: the list items' fill-in intents (selected task, filter) are
+        // merged into this template, which Android 12+ ignores for immutable PendingIntents
         PendingIntent pendingIntent = PendingIntent.getActivity(ctx, FROM_LIST_VIEW, appIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         view.setPendingIntentTemplate(R.id.widgetlv, pendingIntent);
 
         appIntent = new Intent(ctx,Simpletask.class);
