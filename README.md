@@ -1,7 +1,18 @@
 Simpletask
 ==========
 
-[![CircleCI](https://circleci.com/gh/mpcjanssen/simpletask-android.svg?style=svg)](https://circleci.com/gh/mpcjanssen/simpletask-android)
+> **About this fork.** [mpcjanssen/simpletask-android](https://github.com/mpcjanssen/simpletask-android)
+> by Mark Janssen was archived in 2023. This fork keeps it building and working on current Android
+> (tested on Android 17) in **maintenance mode**: no new features or UI changes, only fixes needed to
+> keep the app working. All credit for the app goes to the original author; it remains GPL-3.0.
+>
+> * **Download:** signed APKs on the [Releases page](https://github.com/cdelahousse/simpletask-android/releases).
+>   They use a new package ID (`ca.delahousse.simpletask…`), so they install alongside, not over, the original app.
+> * **Flavors built:** `dropbox` and `cloudless` (use cloudless with Syncthing-Fork (from F-Droid) for Syncthing).
+> * **Dropbox:** log in with *Full Dropbox* access; the *App folder* option is not configured in these builds.
+> * **What changed:** see the commit history on the default branch. In short: dead build dependencies replaced,
+>   toolchain and target SDK updated, edge-to-edge layout fixes, Dropbox SDK 7.0.0 (fixes login),
+>   notification permission on Android 13+.
 
 Simpletask is a simple task manager for Android, based on the brilliant [todo.txt](http://todotxt.com) format by [Gina Trapani](http://ginatrapani.org/).
 
