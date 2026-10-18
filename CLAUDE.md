@@ -18,7 +18,9 @@ Default branch: `maintenance/modernize`. Upstream's `master` is kept untouched f
   author were reviewing. It gets the diff, the purpose and these rules, may build the app and try
   it in the emulator (fake data only, never the maintainer's phone or real Dropbox). Its objections
   are not taken at face value: whoever made the change verifies each one against the code or the
-  emulator, then fixes it or rejects it with a stated reason, before merging.
+  emulator, then fixes it or rejects it with a stated reason, before merging. The reviewer also
+  looks for regressions in visual and rendering performance (jank, dropped frames, extra layout
+  passes or overdraw), e.g. by comparing `dumpsys gfxinfo` frame stats before and after.
 - Ship the `dropbox` and `cloudless` flavors. Keep `nextcloud`, `webdav` and `encrypted` building,
   but they are not released.
 
