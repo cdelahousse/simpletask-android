@@ -107,7 +107,14 @@ private fun applySystemBarInsets(
         } else {
             0
         }
-        val navigationBarInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+        // Include the keyboard on Android 15+: with forced edge-to-edge, adjustResize no longer
+        // shrinks the window. Older versions still resize, so adding it there would double-pad.
+        val bottomTypes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            WindowInsetsCompat.Type.navigationBars() or WindowInsetsCompat.Type.ime()
+        } else {
+            WindowInsetsCompat.Type.navigationBars()
+        }
+        val navigationBarInset = insets.getInsets(bottomTypes).bottom
         view.setPadding(
                 view.paddingLeft,
                 rootPaddingTop + topInset,
