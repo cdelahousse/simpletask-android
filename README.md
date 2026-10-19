@@ -14,6 +14,17 @@ Simpletask
 >   toolchain and target SDK updated, edge-to-edge layout fixes, Dropbox SDK 7.0.0 (fixes login),
 >   notification permission on Android 13+.
 
+## Screenshots
+
+<p>
+  <img src="docs/screenshots/01-task-list.png" width="200" alt="Task list grouped by context, with priorities, projects and due dates">
+  <img src="docs/screenshots/02-quick-filter.png" width="200" alt="Quick filter drawer with lists and tags">
+  <img src="docs/screenshots/03-add-task.png" width="200" alt="Add Task screen with a todo.txt line being typed">
+  <img src="docs/screenshots/04-sort.png" width="200" alt="Filter screen, Sort tab">
+</p>
+
+Example tasks only, taken on an Android 16 emulator with v11.0.2-fork.1 (cloudless).
+
 Simpletask is a simple task manager for Android, based on the brilliant [todo.txt](http://todotxt.com) format by [Gina Trapani](http://ginatrapani.org/).
 
   * [Documentation](#documentation)
